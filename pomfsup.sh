@@ -3,7 +3,7 @@
 #license: MIT
 
 #another pomf uploader
-##no multiplr files support
+##no multiple files support
 ##no upload via url support
 
 host="$1"

@@ -16,12 +16,14 @@ Pomf file uploader
 Usage: ./$(basename "$0") alias File
 
 Supported sites:
-  * pomf.cat     [75 MiB]       (alias: pomfcat)
-  * uguu.se      [128 MiB 48h]  (alias: uguu)
-  * catbox.moe   [200 MiB]      (alias: catbox)
-  * 0x0.st       [512 MiB]      (alias: 0x0)
-  * zz.ht        [1024 MiB]     (alias: zzht)
-  * cockfile.com [2048 MiB 24H] (alias: cock)
+  * pomf.cat             [75 MiB]       (alias: pomfcat)
+  * uguu.se              [128 MiB 48h]  (alias: uguu)
+  * catbox.moe           [200 MiB]      (alias: catbox)
+  * 0x0.st               [512 MiB]      (alias: 0x0)
+  * litterbox.catbox.moe [1 GB 72h]     (alias: litter)
+  * zz.ht                [1024 MiB]     (alias: zzht)
+  * cockfile.com         [2048 MiB 24h] (alias: cock)
+  * temp.sh              [4 GB 72h]     (alias: litter)
 "
 exit
 fi
@@ -33,6 +35,9 @@ case "$host" in
     catbox) hostURL='https://catbox.moe/user/api.php' ;;
     zzht) hostURL='https://zz.ht/api/upload' ;;
     cock) hostURL='https://cockfile.com/upload.php' ;;
+    temp) hostURL='https://temp.sh' ;;
+    litter) hostURL='https://litterbox.catbox.moe/resources/internals/api.php' ;;
+
 esac
 
 if [ "$host" = 'uguu' ]; then
@@ -52,6 +57,12 @@ elif [ "$host" = 'zzht' ]; then
 
 elif [ "$host" = 'cock' ]; then
     uploadResult="$(curl -sf -F files[]=@"$localFile" "$hostURL" | egrep -o "a.cockfile.com[a-z0-9A-Z./\]{1,20}" | sed 's/\\//')"
+
+elif [ "$host" = 'temp' ]; then
+    uploadResult="$(curl -sf -T "$localFile" "$hostURL")"
+
+elif [ "$host" = 'litter' ]; then
+    uploadResult="$(curl -sf -F "reqtype=fileupload" -F "time=72h" -F fileToUpload="@$localFile" "$hostURL")"
 
 else
     echo "something went wrong"

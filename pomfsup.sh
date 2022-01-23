@@ -30,7 +30,7 @@ fi
 
 case "$host" in
     pomfcat) hostURL='https://pomf.cat/upload.php' ;;
-    uguu) hostURL='https://uguu.se/api.php?d=upload-tool' ;;
+    uguu) hostURL='https://uguu.se/upload.php' ;;
     0x0) hostURL='https://0x0.st' ;;
     catbox) hostURL='https://catbox.moe/user/api.php' ;;
     zzht) hostURL='https://zz.ht/api/upload' ;;
@@ -44,7 +44,7 @@ if [ "$host" = 'uguu' ]; then
     uploadResult="$(curl -sf -F file="@$localFile" "$hostURL")"
 
 elif [ "$host" = 'pomfcat' ]; then
-    uploadResult="$(curl -sf -F files[]=@"$localFile" "$hostURL" | jq -c -r --arg base "https://a.pomf.cat/" '$base + .files[].url')"
+    uploadResult="$(curl -sf -F files[]=@"$localFile" "$hostURL" | jq -r .files[].url)"
 
 elif [ "$host" = '0x0' ]; then
 	uploadResult="$(curl -sf -F file="@$localFile" "$hostURL")"

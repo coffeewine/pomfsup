@@ -16,5 +16,6 @@ Supported sites:
 Example:
 input:
 ./pomfsup uguu mywallpaper.jpg
+
 output:
 https://a.uguu.se/[hash].jpg
